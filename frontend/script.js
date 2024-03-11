@@ -1,3 +1,5 @@
+let isLoggedIn = false;
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#newEntry').addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -5,6 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
             event.currentTarget.value = ""
         }
     });
+
+    document.querySelector('#password').addEventListener("keydown", (event) => {
+        if (event.key === "Enter"){
+            fetch("http://localhost:8080/api/entry/isvalidpassword/" + event.currentTarget.value)
+                .then(response => {return response.json()})
+                .then(data => {
+                    console.log(data)
+                    if(data){
+                        isLoggedIn = true;
+                    } else{
+                        isLoggedIn = false;
+                    }
+                    document.querySelector('.feedback').innerHTML = isLoggedIn
+                })
+        }
+    })
 });
 
 createSocketConnection()

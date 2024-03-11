@@ -28,6 +28,12 @@ public class EntryResource {
     }
 
     @GET
+    @Path("isvalidpassword/{password}")
+    public boolean isValidPassword(@PathParam("password")String password){
+        return repository.isValidPassword(password);
+    }
+
+    @GET
     @Path("getall")
     public List<Entry> getAll(){
         return repository.getAll();
