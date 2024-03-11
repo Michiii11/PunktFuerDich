@@ -10,17 +10,23 @@ import java.util.List;
 public class Entry {
     @Id
     private String name;
+    private String displayName;
     private int points;
 
     public Entry(){}
 
-    public Entry(String name){
+    public Entry(String name, String displayName){
         this.name = name;
+        this.displayName = displayName;
         this.points = 1;
     }
 
     public void increasePoints(){
         this.points++;
+    }
+
+    public void decreasePoints(){
+        this.points--;
     }
 
     public String getName() {
@@ -37,5 +43,13 @@ public class Entry {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

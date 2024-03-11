@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#newEntry').addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
             increase(event.currentTarget.value)
+            event.currentTarget.value = ""
         }
     });
 });
@@ -23,6 +24,7 @@ function createSocketConnection() {
 }
 
 function updateHTML(m) {
+    document.querySelector('.leaderboard').innerHTML = ""
     for (const key in m) {
         if(m[key].name === "MICHI"){
             document.querySelector('.michi p').innerHTML = m[key].points
@@ -30,15 +32,26 @@ function updateHTML(m) {
         if(m[key].name === "YANIK"){
             document.querySelector('.yanik p').innerHTML = m[key].points
         }
+
+        document.querySelector('.leaderboard').innerHTML += `<div class="entry">
+            <p class="name">${m[key].displayName}</p>
+            <button onclick="increase('${m[key].displayName}')">+</button>
+            <p class="points">${m[key].points}</p>
+            <button onclick="decrease('${m[key].displayName}')">-</button>
+        </div>`
     }
 
     document.querySelector('#newEntry').focus()
 }
 
 function increase(name){
-    fetch("http://localhost:8080/api/entry/addpoints/" + name)
-        .then(data => {
-        })
+    fetch("http://localhost:8080/api/entry/increase/" + name)
+        .then(data => {})
+}
+
+function decrease(name) {
+    fetch("http://localhost:8080/api/entry/decrease/" + name)
+        .then(data => {})
 }
 
 function updateCounter(element, count){

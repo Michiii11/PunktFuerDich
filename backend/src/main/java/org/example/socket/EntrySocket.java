@@ -29,7 +29,6 @@ public class EntrySocket {
     public void onOpen(Session session) {
         System.out.println("Socket opened: " + session);
         sessions.add(session);
-        broadcast(repository.getAll());
     }
 
     @OnClose
@@ -39,7 +38,6 @@ public class EntrySocket {
     }
 
     public void broadcast(List<Entry> response) {
-        //convert data to a string (json-string)
         String responseString = "";
         try{
             responseString = objectMapper.writeValueAsString(response);

@@ -16,9 +16,15 @@ public class EntryResource {
     EntryRepository repository;
 
     @GET
-    @Path("addpoints/{name}")
-    public void addPoints(@PathParam("name")String name) {
-        repository.addPoints(name);
+    @Path("increase/{name}")
+    public void increase(@PathParam("name")String name) {
+        repository.increasePoints(name);
+    }
+
+    @GET
+    @Path("decrease/{name}")
+    public void decrease(@PathParam("name")String name){
+        repository.decreasePoints(name);
     }
 
     @GET
