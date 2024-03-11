@@ -7,28 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Punkt für dich</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="./script.js"></script>
 </head>
-<script>
-    let michiCount = 0;
-    let yanikCount = 0;
-
-    function increaseMichi(){
-        document.querySelector('.michi p').innerHTML = ++michiCount
-    }
-
-    function increaseYanik(){
-        document.querySelector('.yanik p').innerHTML = ++yanikCount
-    }
-</script>
 <body>
-    <div class="box michi" onclick="increaseMichi()">
-        <h2>Michi</h2>
-        <p>0</p>
-    </div>
+    <section class="top">
+        <div class="box michi" onclick="increaseMichi()">
+            <h2>Michi</h2>
+            <p>0</p>
+        </div>
 
-    <div class="box yanik" onclick="increaseYanik()">
-        <h2>Yanik</h2>
-        <p>0</p>
-    </div>
+        <div class="box yanik" onclick="increaseYanik()">
+            <h2>Yanik</h2>
+            <p>0</p>
+        </div>
+    </section>
 </body>
 </html>
