@@ -9,6 +9,7 @@ import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import org.example.model.Entry;
+import org.example.repository.EntryRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +22,14 @@ public class EntrySocket {
     @Inject
     ObjectMapper objectMapper;
 
+    @Inject
+    EntryRepository repository;
+
     @OnOpen
     public void onOpen(Session session) {
         System.out.println("Socket opened: " + session);
         sessions.add(session);
+        broadcast(repository.getAll());
     }
 
     @OnClose

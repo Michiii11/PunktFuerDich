@@ -15,7 +15,7 @@ public class EntryResource {
     @Inject
     EntryRepository repository;
 
-    @POST
+    @GET
     @Path("addpoints/{name}")
     public void addPoints(@PathParam("name")String name) {
         repository.addPoints(name);
