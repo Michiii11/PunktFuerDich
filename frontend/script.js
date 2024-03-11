@@ -1,3 +1,11 @@
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#newEntry').addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            increase(event.currentTarget.value)
+        }
+    });
+});
+
 createSocketConnection()
 function createSocketConnection() {
     let socket = new WebSocket("ws://localhost:8080/socket/entry");
@@ -15,7 +23,6 @@ function createSocketConnection() {
 }
 
 function updateHTML(m) {
-    console.log(m)
     for (const key in m) {
         if(m[key].name === "MICHI"){
             document.querySelector('.michi p').innerHTML = m[key].points
@@ -24,6 +31,8 @@ function updateHTML(m) {
             document.querySelector('.yanik p').innerHTML = m[key].points
         }
     }
+
+    document.querySelector('#newEntry').focus()
 }
 
 function increase(name){
