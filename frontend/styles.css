@@ -5,13 +5,15 @@
 }
 
 body{
+    /*Hide scrollbar*/
 }
 
-section{
+section.top{
    display: grid;
     grid-template-columns: 1fr 1fr;
     place-items: center;
     height: 100vh;
+    position: relative;
 }
 
 .box {
@@ -26,12 +28,32 @@ section{
     aspect-ratio: 1/1;
     border-radius: 2rem;
     box-shadow: 10px 10px 18px 0 rgba(0, 0, 0, 0.3), inset -10px -10px 18px 0 rgba(0, 0, 0, 0.3), inset 10px 10px 18px 0 rgba(255, 255, 255, 0.2);
-    transition: padding .5s;
+    transition: padding .5s, color .2s, background .5s;
     animation: hoverend 0.5s ease forwards;
+
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #ff00ac 100%);
+    background-size: 400%;
+    background-position: 0 0;
+}
+
+.clickCircle{
+    content: "";
+    border-radius: 50%;
+    width: 40vw;
+    aspect-ratio: 1;
+    background-color: rgba(127, 105, 131, 0.33);
+    position: absolute;
+    z-index: -2;
+    transform: translateX(-50%) translateY(-50%);
+    transform-origin: top left;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .box:hover{
-    animation: expand 0.5s ease forwards;
+    animation: hoverbox 0.5s ease forwards;
+    color: white;
+    background-position: 100% 100%;
 }
 
 .box:hover p{
@@ -54,7 +76,7 @@ section{
     font-weight: bold;
 }
 
-@keyframes expand {
+@keyframes hoverbox {
     from{
         padding: 0;
     }
@@ -73,4 +95,18 @@ section{
     to{
         padding: 0rem;
     }
+}
+
+section.leaderboard{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    font-size: 1.3rem;
+    padding-bottom: 5rem;
+}
+
+.entry{
+    display: flex;
+    justify-content: space-between;
 }

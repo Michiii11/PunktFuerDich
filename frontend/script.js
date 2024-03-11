@@ -14,22 +14,37 @@ function increaseYanik(){
 function updateCounter(element, count){
     element.querySelector("p").innerHTML = count
     element.animate([
-        {transform: 'scale(1)'},
-        {transform: 'scale(0.98)'},
-        {transform: 'scale(1)'}
+        {scale: '1'},
+        {scale: '0.98'},
+        {scale: '1'}
     ],{
         duration: 300,
         iterations: 1,
         easing: 'ease-in'
     })
     element.querySelector("p").animate([
-        {transform: 'scale(1)'},
-        {transform: 'scale(0.9)'},
-        {transform: 'scale(1.02)'},
-        {transform: 'scale(1)'}
+        {scale: '1'},
+        {scale: '0.9'},
+        {scale: '1.02'},
+        {scale: '1'}
     ],{
         duration: 200,
         iterations: 1,
         easing: 'ease-in'
+    })
+
+    let clickCircle = document.querySelector('.clickCircle')
+    let elemBounds = element.getBoundingClientRect()
+    clickCircle.style.top = elemBounds.top + window.scrollY + elemBounds.height/2 + "px"
+    clickCircle.style.left = elemBounds.left + elemBounds.width/2 + "px"
+
+    clickCircle.animate([
+        {scale: '.3', opacity: '1'},
+        {scale: '1', opacity: '0'},
+    ],{
+        duration: 500,
+        iterations: 1,
+        easing: 'ease-in',
+        fill: "forwards"
     })
 }
