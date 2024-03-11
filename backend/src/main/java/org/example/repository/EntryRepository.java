@@ -19,10 +19,10 @@ public class EntryRepository {
 
     @Transactional
     public void addPoints(String name){
-        Entry entry = em.find(Entry.class, name);
+        Entry entry = em.find(Entry.class, name.toUpperCase());
 
         if(entry == null){
-            Entry newEntry = new Entry(name);
+            Entry newEntry = new Entry(name.toUpperCase());
             em.persist(newEntry);
         } else {
             entry.increasePoints();

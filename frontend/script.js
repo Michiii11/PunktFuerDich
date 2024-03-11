@@ -1,14 +1,44 @@
-let michiCount = 0;
-let yanikCount = 0;
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#newEntry').addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            increase(event.currentTarget.value)
+        }
+    });
+});
 
-function increaseMichi(){
-    let counter = document.querySelector('.michi')
-    updateCounter(counter, ++michiCount)
+createSocketConnection()
+function createSocketConnection() {
+    let socket = new WebSocket("ws://localhost:8080/socket/entry");
+
+    socket.onopen = (m) => {
+        fetch("http://localhost:8080/api/entry/getall")
+            .then(response => {return response.json()})
+            .then(data => {
+                updateHTML(data)
+            })
+    }
+    socket.onmessage = (m) => {
+        updateHTML(JSON.parse(m.data))
+    }
 }
 
-function increaseYanik(){
-    let counter = document.querySelector('.yanik')
-    updateCounter(counter, ++yanikCount)
+function updateHTML(m) {
+    for (const key in m) {
+        if(m[key].name === "MICHI"){
+            document.querySelector('.michi p').innerHTML = m[key].points
+        }
+        if(m[key].name === "YANIK"){
+            document.querySelector('.yanik p').innerHTML = m[key].points
+        }
+    }
+
+    document.querySelector('#newEntry').focus()
+}
+
+function increase(name){
+    fetch("http://localhost:8080/api/entry/addpoints/" + name)
+        .then(data => {
+        })
 }
 
 function updateCounter(element, count){
