@@ -1,6 +1,11 @@
-let isLoggedIn = false;
+let logInStatus = "out";
+if(localStorage.getItem("punktfuerdich_loginstatus")) {
+    logInStatus = localStorage.getItem("punktfuerdich_loginstatus")
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+    showOrHideLoginSmile()
+
     document.querySelector('#newEntry').addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
             increase(event.currentTarget.value)
@@ -10,20 +15,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('#password').addEventListener("keydown", (event) => {
         if (event.key === "Enter"){
-            fetch("http://localhost:8080/api/entry/isvalidpassword/" + event.currentTarget.value)
-                .then(response => {return response.json()})
-                .then(data => {
-                    console.log(data)
-                    if(data){
-                        isLoggedIn = true;
-                    } else{
-                        isLoggedIn = false;
-                    }
-                    document.querySelector('.feedback').innerHTML = isLoggedIn
-                })
+            validatePassword()
         }
     })
 });
+
+function setLogInStatus(status){
+    logInStatus = status
+    
+    document.querySelector('#password').value = ""
+    showOrHideLoginSmile()
+}
+
+function validatePassword(){
+    let value = document.querySelector('#password').value
+    hashString(value).then(result => {
+        let data = {"password": result}
+        fetch("http://localhost:8080/api/entry/isvalidpassword", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)})
+            .then(response => {return response.json()})
+            .then(data => {
+                if(data){
+                    setLogInStatus(result)
+                } else{
+                    setLogInStatus("out")
+                }
+            })
+    });
+}
+
+function showOrHideLoginSmile(){
+    localStorage.setItem("punktfuerdich_loginstatus", logInStatus)
+
+    if(logInStatus === "k4WG5VMu0VTZwFNwGL++Ya5ezg6Z+cbl/hHjEt4EuYc=" || logInStatus === "guest"){
+        document.querySelector('main').style.display = 'block'
+        document.querySelector('.login').style.display = 'none'
+    } else{
+        document.querySelector('.login').style.display = 'block'
+        document.querySelector('main').style.display = 'none'
+    }
+}
+
+async function hashString(input) {
+    try {
+        // Convert the string to an array buffer
+        const encoder = new TextEncoder();
+        const data = encoder.encode(input);
+
+        // Hash the array buffer using SHA-256
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+        // Convert the hash buffer to a Base64 encoded string
+        const base64Hash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)));
+
+        return base64Hash;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
 
 createSocketConnection()
 function createSocketConnection() {
@@ -58,8 +112,6 @@ function updateHTML(m) {
             <button onclick="decrease('${m[key].displayName}')">-</button>
         </div>`
     }
-
-    document.querySelector('#newEntry').focus()
 }
 
 function increase(name){

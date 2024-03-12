@@ -1,10 +1,9 @@
 package org.example.resource;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import org.example.model.Entry;
 import org.example.repository.EntryRepository;
 
@@ -27,9 +26,10 @@ public class EntryResource {
         repository.decreasePoints(name);
     }
 
-    @GET
-    @Path("isvalidpassword/{password}")
-    public boolean isValidPassword(@PathParam("password")String password){
+    @POST
+    @Path("isvalidpassword")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean isValidPassword(JsonObject password){
         return repository.isValidPassword(password);
     }
 

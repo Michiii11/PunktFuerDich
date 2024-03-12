@@ -110,3 +110,7 @@ section.leaderboard{
     display: flex;
     justify-content: space-between;
 }
+
+main {
+    display: none;
+}

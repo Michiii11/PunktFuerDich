@@ -2,6 +2,7 @@ package org.example.repository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.example.model.Entry;
@@ -46,8 +47,8 @@ public class EntryRepository {
         entrySocket.broadcast(getAll());
     }
 
-    public boolean isValidPassword(String password){
-        return Objects.equals(hashString("yanichi"), hashString(password));
+    public boolean isValidPassword(JsonObject password){
+        return Objects.equals("k4WG5VMu0VTZwFNwGL++Ya5ezg6Z+cbl/hHjEt4EuYc=", password.getString("password"));
     }
 
     public static String hashString(String input) {

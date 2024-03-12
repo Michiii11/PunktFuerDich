@@ -11,27 +11,33 @@
 </head>
 <body>
     <section class="login">
+        <h2>Please type in the correct password</h2>
         <input type="password" placeholder="Enter password" name="password" id="password">
+        <button onclick="validatePassword()">Login</button>
+        <button onclick="setLogInStatus('guest')">Login as Guest</button>
         <p class="feedback"></p>
     </section>
 
-    <section class="top">
-        <div class="box michi" onclick="increase('Michi')">
-            <h2>Michi</h2>
-            <p>0</p>
-        </div>
+    <main>
+        <button onclick="setLogInStatus('out')">Logout</button>
+        <section class="top">
+            <div class="box michi" onclick="increase('Michi')">
+                <h2>Michi</h2>
+                <p>0</p>
+            </div>
 
-        <div class="box yanik" onclick="increase('Yanik')">
-            <h2>Yanik</h2>
-            <p>0</p>
-        </div>
+            <div class="box yanik" onclick="increase('Yanik')">
+                <h2>Yanik</h2>
+                <p>0</p>
+            </div>
 
-        <div class="clickCircle"></div>
-    </section>
-    <section class="leaderboard">
+            <div class="clickCircle"></div>
+        </section>
+        <section class="leaderboard">
 
-    </section>
+        </section>
 
-    <input type="text" id="newEntry">
+        <input type="text" id="newEntry">
+    </main>
 </body>
 </html>
