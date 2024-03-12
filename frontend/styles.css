@@ -97,6 +97,18 @@ section.top{
     }
 }
 
+@media screen and (max-width: 768px){
+    .box {
+        width: 40vw;
+    }
+    .box p{
+        font-size: 2rem;
+    }
+    .box h2{
+        font-size: 1.5rem;
+    }
+}
+
 section.leaderboard{
     width: 60%;
     display: flex;
