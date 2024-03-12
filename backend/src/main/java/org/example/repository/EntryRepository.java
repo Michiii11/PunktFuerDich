@@ -12,7 +12,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import io.github.cdimascio.dotenv.Dotenv;
 
 @ApplicationScoped
 public class EntryRepository {
@@ -57,14 +60,15 @@ public class EntryRepository {
             return false;
         }
 
-        if(Objects.equals(password, "k4WG5VMu0VTZwFNwGL++Ya5ezg6Z+cbl/hHjEt4EuYc=")) return true;
-        //if (Objects.equals(password, hashString(System.getenv("USER_PASSWORD")))) return true;
-        //if (Objects.equals(password, hashString(System.getenv("ADMIN_PASSWORD")))) return true;
+        /*Dotenv dotenv = Dotenv.configure().load();*/
+        /*dotenv.get("USER_PASSWORD")*/
 
-        return false;
+        return Objects.equals(password, hashString("hardcodedpw"));
     }
 
     public static String hashString(String input) {
+        if(input == null) return null;
+
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashedBytes = digest.digest(input.getBytes());

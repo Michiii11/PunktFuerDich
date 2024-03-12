@@ -4,8 +4,13 @@
     font-family: "Poppins", sans-serif;
 }
 
-body{
-    /*Hide scrollbar*/
+*{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+    display: none;
 }
 
 section.top{
@@ -146,21 +151,42 @@ tr.entry:has(button:hover){
     text-align: center;
 }
 
-.entry button{
-    aspect-ratio: 1;
-    height: 1.8rem;
-    border-radius: 50%;
+button{
     background-color: transparent;
     outline: none;
     border: none;
     box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.3), -1px -1px 2px 0 rgba(0, 0, 0, 0.1), inset -2px -2px 5px 0 rgba(0, 0, 0, 0.3), inset 3px 3px 5px 0 rgba(255, 255, 255, 0.2);
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #ff00ac 100%);
-    background-size: 400%;
-    background-position: 0 0;
-    transition: background .5s;
+    transition: background .5s, scale .2s, color .2s;
     cursor: pointer;
+    padding: .3rem 1rem;
+    border-radius: .3rem;
+}
+
+button:hover{
+    animation: hoverbutton .3s ease-out forwards;
+}
+
+@keyframes hoverbutton {
+    from{
+        scale: 1;
+    }
+    50%{
+        scale: 1.05;
+    }
+    to{
+        scale: 1.02;
+    }
+}
+
+.entry button{
+    aspect-ratio: 1;
+    height: 1.8rem;
+    border-radius: 50%;
     font-size: 1rem;
     font-weight: 500;
+    padding: 0;
+    background-size: 400%;
+    background-position: 0 0;
 }
 
 .entry button:first-of-type{
@@ -192,4 +218,52 @@ tr.entry:has(button:hover){
 
 main {
     display: none;
+}
+
+.login{
+    display: grid;
+    place-content: center;
+    height: 100dvh;
+}
+
+.login h2{
+    font-size: 2.5rem;
+    margin-bottom: .5rem;
+    background-image: repeating-linear-gradient(45deg,#07D5DB 0%,#07D5DB 10%, #ff00ac 90%, #ff00ac 100%);
+    background-clip: text;
+    color: transparent;
+    width: fit-content;
+}
+
+.login .buttons{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.login input{
+    box-shadow: inset 1px 1px 3px 3px rgba(0, 0, 0, 0.2);
+    outline: none;
+    border-radius: .3rem;
+    padding: .3rem .5rem;
+    width: min(35ch, 90vw);
+    border: none;
+    transition: background .3s;
+    background-image: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0%) 0%, rgba(0, 0, 0, 0%) 40%, rgba(7, 212, 219, 6%) 60%, rgba(255, 0, 170, 6%) 100%);
+    background-size: 250%;
+    background-position: 0 100%;
+}
+
+.login input:focus-visible{
+    background-position: 100% 0;
+}
+
+.userButton{
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    aspect-ratio: 1;
+    padding: 0;
+    height: 2rem;
+    z-index: 50;
 }

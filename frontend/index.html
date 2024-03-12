@@ -8,19 +8,21 @@
     <title>Punkt für dich</title>
     <link rel="stylesheet" href="styles.css">
     <script src="./script.js"></script>
+    <script src="https://kit.fontawesome.com/7796cb6c97.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <section class="login">
-        <h2>Please type in the correct password</h2>
-        <input type="password" placeholder="Enter password" name="password" id="password">
-        <button onclick="validatePassword()">Login</button>
-        <button onclick="setLogInStatus('guest')">Login as Guest</button>
-        <p class="feedback"></p>
-    </section>
+    <div class="login">
+        <h2>Login</h2>
+        <input type="password" placeholder="password" id="password">
+        <div class="buttons">
+            <button onclick="validatePassword()">Login</button>
+            <button onclick="setLogInStatus('guest')">Guest</button>
+        </div>
+    </div>
 
 
     <main>
-        <button onclick="setLogInStatus('out')">Logout</button>
+        <button onclick="setLogInStatus('out')" class="userButton"><i class="fa-solid fa-user"></i></button>
 
         <section class="top">
             <div class="box michi" onclick="increase('Michi'); buttonAnimation(this)">

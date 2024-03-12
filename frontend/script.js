@@ -1,3 +1,5 @@
+const API_URL = "http://138.2.152.216"
+
 let logInStatus = "out";
 if(localStorage.getItem("punktfuerdich_loginstatus")) {
     logInStatus = localStorage.getItem("punktfuerdich_loginstatus")
@@ -31,7 +33,7 @@ function validatePassword(){
     let value = document.querySelector('#password').value
     hashString(value).then(result => {
         let data = {"password": result}
-        fetch("http://localhost:8080/api/entry/isvalidpassword", {
+        fetch(API_URL + "/api/entry/isvalidpassword", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -40,7 +42,7 @@ function validatePassword(){
             .then(response => {return response.json()})
             .then(data => {
                 if(data){
-                    setLogInStatus(result)
+                    setLogInStatus("in")
                 } else{
                     setLogInStatus("out")
                 }
@@ -51,12 +53,12 @@ function validatePassword(){
 function showOrHideLoginSmile(){
     localStorage.setItem("punktfuerdich_loginstatus", logInStatus)
 
-    if(logInStatus === "k4WG5VMu0VTZwFNwGL++Ya5ezg6Z+cbl/hHjEt4EuYc=" || logInStatus === "guest"){
+    if(logInStatus === "in" || logInStatus === "guest"){
         document.querySelector('main').style.display = 'block'
         document.querySelector('.login').style.display = 'none'
     } else{
-        document.querySelector('.login').style.display = 'block'
         document.querySelector('main').style.display = 'none'
+        document.querySelector('.login').style.display = 'grid'
     }
 }
 
@@ -84,7 +86,7 @@ function createSocketConnection() {
     let socket = new WebSocket("ws://localhost:8080/socket/entry");
 
     socket.onopen = (m) => {
-        fetch("http://localhost:8080/api/entry/getall")
+        fetch(API_URL + "/api/entry/getall")
             .then(response => {return response.json()})
             .then(data => {
                 updateHTML(data)
@@ -118,12 +120,12 @@ function updateHTML(m) {
 }
 
 function increase(name){
-    fetch("http://localhost:8080/api/entry/increase/" + name)
+    fetch(API_URL + "/api/entry/increase/" + name)
         .then(data => {})
 }
 
 function decrease(name) {
-    fetch("http://localhost:8080/api/entry/decrease/" + name)
+    fetch(API_URL + "/api/entry/decrease/" + name)
         .then(data => {})
 }
 
