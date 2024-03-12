@@ -30,7 +30,7 @@ public class EntryResource {
     @Path("isvalidpassword")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean isValidPassword(JsonObject password){
-        return repository.isValidPassword(password);
+        return repository.isValidPassword(password.getString("password"));
     }
 
     @GET

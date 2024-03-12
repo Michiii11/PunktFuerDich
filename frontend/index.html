@@ -18,31 +18,30 @@
         <p class="feedback"></p>
     </section>
 
-    <section class="top">
-        <div class="box michi" onclick="increase('Michi'); buttonAnimation(this)">
-            <h2>Michi</h2>
-            <p>0</p>
-        </div>
+
     <main>
         <button onclick="setLogInStatus('out')">Logout</button>
+
         <section class="top">
-            <div class="box michi" onclick="increase('Michi')">
+            <div class="box michi" onclick="increase('Michi'); buttonAnimation(this)">
                 <h2>Michi</h2>
                 <p>0</p>
             </div>
 
-        <div class="box yanik" onclick="increase('Yanik'); buttonAnimation(this)">
-            <h2>Yanik</h2>
-            <p>0</p>
-        </div>
 
-        <div class="clickCircle"></div>
-    </section>
+            <div class="box yanik" onclick="increase('Yanik'); buttonAnimation(this)">
+                <h2>Yanik</h2>
+                <p>0</p>
+            </div>
 
-    <input type="text" id="newEntry">
+            <div class="clickCircle"></div>
+        </section>
 
-    <table class="leaderboard">
-        <tbody></tbody>
-    </table>
+        <input type="text" id="newEntry">
+
+        <table class="leaderboard">
+            <tbody></tbody>
+        </table>
+    </main>
 </body>
 </html>
