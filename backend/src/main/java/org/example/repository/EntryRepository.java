@@ -47,6 +47,19 @@ public class EntryRepository {
         entrySocket.broadcast(getAll());
     }
 
+
+    public List<Entry> getAll(){
+        return em.createQuery("select e from Entry e order by e.points desc", Entry.class).getResultList();
+    }
+
+    public boolean isValidPassword(String password){
+        if(password == null || password.isEmpty()){
+            return false;
+        }
+        if(Objects.equals(hashString(password), hashString(System.getenv("USER_PASSWORD")))) return true;
+        if(Objects.equals(hashString(password), hashString(System.getenv("ADMIN_PASSWORD")))) return true;
+
+        return false;
     public boolean isValidPassword(JsonObject password){
         return Objects.equals("k4WG5VMu0VTZwFNwGL++Ya5ezg6Z+cbl/hHjEt4EuYc=", password.getString("password"));
     }

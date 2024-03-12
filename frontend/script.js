@@ -96,7 +96,7 @@ function createSocketConnection() {
 }
 
 function updateHTML(m) {
-    document.querySelector('.leaderboard').innerHTML = ""
+    document.querySelector('.leaderboard tbody').innerHTML = ""
     for (const key in m) {
         if(m[key].name === "MICHI"){
             document.querySelector('.michi p').innerHTML = m[key].points
@@ -105,12 +105,15 @@ function updateHTML(m) {
             document.querySelector('.yanik p').innerHTML = m[key].points
         }
 
-        document.querySelector('.leaderboard').innerHTML += `<div class="entry">
-            <p class="name">${m[key].displayName}</p>
-            <button onclick="increase('${m[key].displayName}')">+</button>
-            <p class="points">${m[key].points}</p>
-            <button onclick="decrease('${m[key].displayName}')">-</button>
-        </div>`
+        document.querySelector('.leaderboard tbody').innerHTML += `
+        <tr class="entry">
+            <td class="left">${m[key].displayName}</td>
+            <td class="right">
+                <button onclick="decrease('${m[key].displayName}')">-</button>
+                <p class="points">${m[key].points}</p>
+                <button onclick="increase('${m[key].displayName}')">+</button>
+            </td>
+        </tr>`
     }
 }
 
@@ -124,9 +127,8 @@ function decrease(name) {
         .then(data => {})
 }
 
-function updateCounter(element, count){
-    element.querySelector("p").innerHTML = count
-    element.animate([
+function buttonAnimation(button){
+    button.animate([
         {scale: '1'},
         {scale: '0.98'},
         {scale: '1'}
@@ -135,7 +137,7 @@ function updateCounter(element, count){
         iterations: 1,
         easing: 'ease-in'
     })
-    element.querySelector("p").animate([
+    button.querySelector("p").animate([
         {scale: '1'},
         {scale: '0.9'},
         {scale: '1.02'},
@@ -147,9 +149,9 @@ function updateCounter(element, count){
     })
 
     let clickCircle = document.querySelector('.clickCircle')
-    let elemBounds = element.getBoundingClientRect()
-    clickCircle.style.top = elemBounds.top + window.scrollY + elemBounds.height/2 + "px"
-    clickCircle.style.left = elemBounds.left + elemBounds.width/2 + "px"
+    let buttonBounds = button.getBoundingClientRect()
+    clickCircle.style.top = buttonBounds.top + window.scrollY + buttonBounds.height/2 + "px"
+    clickCircle.style.left = buttonBounds.left + buttonBounds.width/2 + "px"
 
     clickCircle.animate([
         {scale: '.3', opacity: '1'},
@@ -161,3 +163,9 @@ function updateCounter(element, count){
         fill: "forwards"
     })
 }
+
+document.addEventListener("keydown", (event) => {
+    if(event.key === "Enter" || event.key === "Space"){
+        document.querySelector('#newEntry').focus()
+    }
+})
