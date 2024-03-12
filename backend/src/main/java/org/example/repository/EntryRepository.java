@@ -7,7 +7,11 @@ import jakarta.transaction.Transactional;
 import org.example.model.Entry;
 import org.example.socket.EntrySocket;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 @ApplicationScoped
 public class EntryRepository {
@@ -40,6 +44,25 @@ public class EntryRepository {
         }
 
         entrySocket.broadcast(getAll());
+    }
+
+    public boolean isValidPassword(String password){
+        return Objects.equals(hashString("yanichi"), hashString(password));
+    }
+
+    public static String hashString(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = digest.digest(input.getBytes());
+
+            // Convert the byte array to a Base64 encoded string
+            String base64Hash = Base64.getEncoder().encodeToString(hashedBytes);
+
+            return base64Hash;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<Entry> getAll(){
