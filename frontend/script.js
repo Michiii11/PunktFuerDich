@@ -109,3 +109,10 @@ function buttonAnimation(button){
         fill: "forwards"
     })
 }
+
+document.addEventListener("keydown", (event) => {
+    console.log(event.key)
+    if(event.key === "Enter" || event.key === "Space"){
+        document.querySelector('#newEntry').focus()
+    }
+}

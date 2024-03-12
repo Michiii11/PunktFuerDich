@@ -46,8 +46,19 @@ public class EntryRepository {
         entrySocket.broadcast(getAll());
     }
 
+
+    public List<Entry> getAll(){
+        return em.createQuery("select e from Entry e order by e.points desc", Entry.class).getResultList();
+    }
+
     public boolean isValidPassword(String password){
-        return Objects.equals(hashString("yanichi"), hashString(password));
+        if(password == null || password.isEmpty()){
+            return false;
+        }
+        if(Objects.equals(hashString(password), hashString(System.getenv("USER_PASSWORD")))) return true;
+        if(Objects.equals(hashString(password), hashString(System.getenv("ADMIN_PASSWORD")))) return true;
+
+        return false;
     }
 
     public static String hashString(String input) {
@@ -63,9 +74,5 @@ public class EntryRepository {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public List<Entry> getAll(){
-        return em.createQuery("select e from Entry e order by e.points desc", Entry.class).getResultList();
     }
 }
