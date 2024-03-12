@@ -42,7 +42,7 @@ function createSocketConnection() {
 }
 
 function updateHTML(m) {
-    document.querySelector('.leaderboard').innerHTML = ""
+    document.querySelector('.leaderboard tbody').innerHTML = ""
     for (const key in m) {
         if(m[key].name === "MICHI"){
             document.querySelector('.michi p').innerHTML = m[key].points
@@ -51,16 +51,16 @@ function updateHTML(m) {
             document.querySelector('.yanik p').innerHTML = m[key].points
         }
 
-        document.querySelector('.leaderboard').innerHTML += `
-        <div class="entry">
-            <p class="name">${m[key].displayName}</p>
-            <button onclick="increase('${m[key].displayName}')">+</button>
-            <p class="points">${m[key].points}</p>
-            <button onclick="decrease('${m[key].displayName}')">-</button>
-        </div>`
+        document.querySelector('.leaderboard tbody').innerHTML += `
+        <tr class="entry">
+            <td class="left">${m[key].displayName}</td>
+            <td class="right">
+                <button onclick="decrease('${m[key].displayName}')">-</button>
+                <p class="points">${m[key].points}</p>
+                <button onclick="increase('${m[key].displayName}')">+</button>
+            </td>
+        </tr>`
     }
-
-    document.querySelector('#newEntry').focus()
 }
 
 function increase(name){
@@ -111,8 +111,7 @@ function buttonAnimation(button){
 }
 
 document.addEventListener("keydown", (event) => {
-    console.log(event.key)
     if(event.key === "Enter" || event.key === "Space"){
         document.querySelector('#newEntry').focus()
     }
-}
+})
