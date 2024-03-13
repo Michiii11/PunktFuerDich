@@ -1,4 +1,10 @@
-const API_URL = "http://138.2.152.216"
+let API_URL = "http://localhost:8080"
+let SOCKET_URL = "ws://localhost:8080"
+
+if(window.location.hostname !== "localhost"){
+    API_URL = "http://138.2.152.216"
+    SOCKET_URL = "ws://138.2.152.216"
+}
 
 let logInStatus = "out";
 if(localStorage.getItem("punktfuerdich_loginstatus")) {
@@ -83,7 +89,7 @@ async function hashString(input) {
 
 createSocketConnection()
 function createSocketConnection() {
-    let socket = new WebSocket("ws://localhost:8080/socket/entry");
+    let socket = new WebSocket(SOCKET_URL + "/socket/entry");
 
     socket.onopen = (m) => {
         fetch(API_URL + "/api/entry/getall")
