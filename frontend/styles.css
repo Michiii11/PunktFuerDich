@@ -138,6 +138,7 @@ tr.entry:has(button:hover){
 
 .entry td{
     margin: .3rem;
+    padding-inline: .5rem;
 }
 
 .entry td.left{
@@ -195,11 +196,28 @@ button:hover{
 }
 
 .entry button:first-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #07D5DB 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #ff00ac 65%, #ff00ac 100%);
 }
 
 .entry button:last-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #ff00ac 65%, #ff00ac 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #07D5DB 100%);
+}
+
+.entry button.remove{
+    opacity: 0;
+    transition: opacity .3s, color .3s, background-color .3s;
+    background-image: none;
+    color: black;
+    margin-right: .25rem;
+}
+
+.entry .remove:hover{
+    background-color: black;
+    color: white;
+}
+
+.entry:has(.left:hover) .remove{
+    opacity: 1;
 }
 
 .entry button:hover{

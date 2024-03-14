@@ -5,6 +5,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.example.model.Entry;
 import org.example.repository.EntryRepository;
 
@@ -18,22 +19,37 @@ public class EntryResource {
     @POST
     @Path("increase")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void increase(JsonObject data) {
-        repository.increasePoints(data.getString("name"));
+    public Response increase(JsonObject data) {
+        if(repository.isValidPassword(data.getString("password"))){
+            repository.increasePoints(data.getString("name"));
+            return Response.ok().build();
+        } else{
+            return Response.status(204, "Password not valid").build();
+        }
     }
 
     @POST
     @Path("decrease")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void decrease(JsonObject data){
-        repository.decreasePoints(data.getString("name"));
+    public Response decrease(JsonObject data){
+        if(repository.isValidPassword(data.getString("password"))){
+            repository.decreasePoints(data.getString("name"));
+            return Response.ok().build();
+        } else{
+            return Response.status(204, "Password not valid").build();
+        }
     }
 
     @POST
     @Path("remove")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void remove(JsonObject data){
-        repository.remove(data.getString("name"));
+    public Response remove(JsonObject data){
+        if(repository.isValidPassword(data.getString("password"))){
+            repository.remove(data.getString("name"));
+            return Response.ok().build();
+        } else{
+            return Response.status(204, "Password not valid").build();
+        }
     }
 
     @POST

@@ -28,25 +28,21 @@ public class EntryRepository {
     @Transactional
     public void increasePoints(String name){
         Entry entry = em.find(Entry.class, name.toUpperCase());
-
         if(entry == null){
             Entry newEntry = new Entry(name.toUpperCase(), name);
             em.persist(newEntry);
         } else {
             entry.increasePoints();
         }
-
         entrySocket.broadcast(getAll());
     }
 
     @Transactional
     public void decreasePoints(String name){
         Entry entry = em.find(Entry.class, name.toUpperCase());
-
         if(entry != null) {
             entry.decreasePoints();
         }
-
         entrySocket.broadcast(getAll());
     }
 
@@ -54,6 +50,7 @@ public class EntryRepository {
     public void remove(String name){
         Entry entry = em.find(Entry.class, name);
         em.remove(entry);
+        entrySocket.broadcast(getAll());
     }
 
 

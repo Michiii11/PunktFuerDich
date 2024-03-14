@@ -22,9 +22,6 @@ public class EntrySocket {
     @Inject
     ObjectMapper objectMapper;
 
-    @Inject
-    EntryRepository repository;
-
     @OnOpen
     public void onOpen(Session session) {
         System.out.println("Socket opened: " + session);
