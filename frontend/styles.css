@@ -166,6 +166,7 @@ button{
     cursor: pointer;
     padding: .3rem 1rem;
     border-radius: .3rem;
+    color: black;
 }
 
 button:hover{

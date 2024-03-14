@@ -54,9 +54,9 @@ function setLogInStatus(status){
 }
 
 function validatePassword(){
-    let password = document.querySelector('#password').value
+    let passwordInput = document.querySelector('#password')
 
-    hashString(password).then(hash => {
+    hashString(passwordInput.value).then(hash => {
         if(hash === "") return ""
 
         let data = {"password": hash}
@@ -74,6 +74,10 @@ function validatePassword(){
                     setLogInStatus("in")
                 } else{
                     setLogInStatus("out")
+                    passwordInput.style.backgroundColor = "rgba(255, 0, 0, 0.2)"
+                    setTimeout(() => {
+                        passwordInput.style.backgroundColor = "rgba(255, 0, 0, 0)"
+                    },300)
                 }
             })
     });
