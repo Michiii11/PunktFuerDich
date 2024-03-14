@@ -2,8 +2,8 @@ let API_URL = "http://localhost:8080"
 let SOCKET_URL = "ws://localhost:8080"
 
 if(window.location.hostname !== "localhost"){
-    API_URL = "http://138.2.152.216"
-    SOCKET_URL = "ws://138.2.152.216"
+    API_URL = "https://punktfuerdich.at"
+    SOCKET_URL = "wss://punktfuerdich.at"
 }
 
 let logInStatus = "out";
@@ -90,7 +90,7 @@ async function hashString(input) {
         return base64Hash;
     } catch (error) {
         console.error(error);
-        return null;
+        return "";
     }
 }
 

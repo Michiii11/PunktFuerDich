@@ -63,7 +63,7 @@ public class EntryRepository {
         /*Dotenv dotenv = Dotenv.configure().load();*/
         /*dotenv.get("USER_PASSWORD")*/
 
-        return Objects.equals(password, hashString("hardcodedpw"));
+        return Objects.equals(password, hashString("massivebwc"));
     }
 
     public static String hashString(String input) {
