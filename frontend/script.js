@@ -36,9 +36,13 @@ function setLogInStatus(status){
 }
 
 function validatePassword(){
-    let value = document.querySelector('#password').value
-    hashString(value).then(result => {
-        let data = {"password": result}
+    let password = document.querySelector('#password').value
+
+    hashString(password).then(passwordHash => {
+        if(passwordHash === "") return ""
+
+        let data = {"password": passwordHash}
+
         fetch(API_URL + "/api/entry/isvalidpassword", {
             method: "POST",
             headers: {
@@ -47,8 +51,9 @@ function validatePassword(){
             body: JSON.stringify(data)})
             .then(response => {return response.json()})
             .then(data => {
-                if(data){
+                if(data === true){
                     setLogInStatus("in")
+                    localStorage.setItem("punktfuerdich-passwordhash", passwordHash)
                 } else{
                     setLogInStatus("out")
                 }
@@ -69,6 +74,8 @@ function showOrHideLoginSmile(){
 }
 
 async function hashString(input) {
+    if(input === "") return ""
+
     try {
         // Convert the string to an array buffer
         const encoder = new TextEncoder();
@@ -168,12 +175,12 @@ function buttonAnimation(button){
     clickCircle.style.left = buttonBounds.left + buttonBounds.width/2 + "px"
 
     clickCircle.animate([
-        {scale: '.3', opacity: '1'},
-        {scale: '1', opacity: '0'},
+        {scale: '.4', opacity: '1', borderRadius: '20%'},
+        {scale: '1', opacity: '0.2', borderRadius: '50%'},
     ],{
         duration: 500,
         iterations: 1,
-        easing: 'ease-in',
+        easing: 'ease-out',
         fill: "forwards"
     })
 }

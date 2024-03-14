@@ -13,6 +13,11 @@
     display: none;
 }
 
+:root{
+    --blue: #07D5DB;
+    --pink: #ff00ac;
+}
+
 section.top{
    display: grid;
     grid-template-columns: 1fr 1fr;
@@ -36,17 +41,17 @@ section.top{
     transition: padding .5s, color .2s, background .5s;
     animation: hoverend 0.5s ease forwards;
 
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #ff00ac 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, var(--blue) 65%, var(--pink) 100%);
     background-size: 400%;
     background-position: 0 0;
 }
 
 .clickCircle{
     content: "";
-    border-radius: 50%;
-    width: 40vw;
+    border-radius: 20%;
+    width: 35vw;
     aspect-ratio: 1;
-    background-color: rgba(127, 105, 131, 0.33);
+    background: radial-gradient(circle, rgba(197, 133, 211, 0.33) 0%, rgba(211, 172, 217, 0.1) 100%);
     position: absolute;
     z-index: -2;
     transform: translateX(-50%) translateY(-50%);
@@ -190,11 +195,11 @@ button:hover{
 }
 
 .entry button:first-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #ff00ac 65%, #ff00ac 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #07D5DB 100%);
 }
 
 .entry button:last-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #07D5DB 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #ff00ac 65%, #ff00ac 100%);
 }
 
 .entry button:hover{
