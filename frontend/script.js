@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         passwordHash = localStorage.getItem("punktfuerdich_passwordhash")
     }
 
-    showOrHideLoginSmile()
+    showOrHideLogin()
 
     document.querySelector('#newEntry').addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -49,7 +49,7 @@ function setLogInStatus(status){
     }
 
     document.querySelector('#password').value = ""
-    showOrHideLoginSmile()
+    showOrHideLogin()
     updateHTML()
 }
 
@@ -79,7 +79,7 @@ function validatePassword(){
     });
 }
 
-function showOrHideLoginSmile(){
+function showOrHideLogin(){
     localStorage.setItem("punktfuerdich_loginstate", logInStatus)
 
     if(logInStatus === "in" || logInStatus === "guest"){
@@ -88,6 +88,7 @@ function showOrHideLoginSmile(){
     } else{
         document.querySelector('main').style.display = 'none'
         document.querySelector('.login').style.display = 'grid'
+        document.querySelector('#password').focus()
     }
 }
 

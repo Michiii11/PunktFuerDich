@@ -268,7 +268,7 @@ main {
     box-shadow: inset 1px 1px 3px 3px rgba(0, 0, 0, 0.2);
     outline: none;
     border-radius: .3rem;
-    padding: .3rem .5rem;
+    padding: .5rem .5rem;
     width: min(35ch, 90vw);
     border: none;
     transition: background .3s;
