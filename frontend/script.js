@@ -12,15 +12,16 @@ let isPasswordValid = false
 
 let hoveredElem = ""
 
-document.addEventListener('DOMContentLoaded', () => {
-    if(localStorage.getItem("punktfuerdich_loginstate")) {
+document.addEventListener('DOMContentLoaded', async () => {
+    if (localStorage.getItem("punktfuerdich_loginstate")) {
         setLogInStatus(localStorage.getItem("punktfuerdich_loginstate"))
     }
-    if(localStorage.getItem("punktfuerdich_passwordhash")) {
+    if (localStorage.getItem("punktfuerdich_passwordhash")) {
         passwordHash = localStorage.getItem("punktfuerdich_passwordhash")
+        if (await validatePasswordHash(passwordHash) === false) {
+            setLogInStatus("out")
+        }
     }
-
-    showOrHideLogin()
 
     document.querySelector('#newEntry').addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelector('#password').addEventListener("keydown", (event) => {
-        if (event.key === "Enter"){
+        if (event.key === "Enter") {
             validatePassword()
         }
     })
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function setLogInStatus(status){
     logInStatus = status
+    localStorage.setItem("punktfuerdich_loginstate", logInStatus)
 
     isPasswordValid = false
     if(logInStatus === "out" || logInStatus === "guest") {
@@ -57,19 +59,9 @@ function validatePassword(){
     let passwordInput = document.querySelector('#password')
 
     hashString(passwordInput.value).then(hash => {
-        if(hash === "") return ""
-
-        let data = {"password": hash}
-
-        fetch(API_URL + "/api/entry/isvalidpassword", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data)})
-            .then(response => {return response.json()})
-            .then(data => {
-                if(data === true){
+        validatePasswordHash(hash)
+            .then((valid)=>{
+                if(valid === true){
                     localStorage.setItem("punktfuerdich_passwordhash", hash)
                     setLogInStatus("in")
                 } else{
@@ -81,11 +73,23 @@ function validatePassword(){
                 }
             })
     });
+
+}
+
+function validatePasswordHash(hash){
+    let data = {"password": hash}
+
+    return fetch(API_URL + "/api/entry/isvalidpassword", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {return response.json()})
 }
 
 function showOrHideLogin(){
-    localStorage.setItem("punktfuerdich_loginstate", logInStatus)
-
     if(logInStatus === "in" || logInStatus === "guest"){
         document.querySelector('main').style.display = 'block'
         document.querySelector('.login').style.display = 'none'
