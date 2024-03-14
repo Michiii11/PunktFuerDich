@@ -6,17 +6,25 @@ if(window.location.hostname !== "localhost"){
     SOCKET_URL = "wss://punktfuerdich.at"
 }
 
-let logInStatus = "out";
-if(localStorage.getItem("punktfuerdich_loginstatus")) {
-    logInStatus = localStorage.getItem("punktfuerdich_loginstatus")
-}
+let logInStatus = "out"
+let passwordHash = ""
+let isPasswordValid = false
+
+let hoveredElem = ""
 
 document.addEventListener('DOMContentLoaded', () => {
-    showOrHideLoginSmile()
+    if(localStorage.getItem("punktfuerdich_loginstate")) {
+        setLogInStatus(localStorage.getItem("punktfuerdich_loginstate"))
+    }
+    if(localStorage.getItem("punktfuerdich_passwordhash")) {
+        passwordHash = localStorage.getItem("punktfuerdich_passwordhash")
+    }
+
+    showOrHideLogin()
 
     document.querySelector('#newEntry').addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-            increase(event.currentTarget.value)
+            post('increase', event.currentTarget.value)
             event.currentTarget.value = ""
         }
     });
@@ -30,18 +38,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function setLogInStatus(status){
     logInStatus = status
-    
+
+    isPasswordValid = false
+    if(logInStatus === "out" || logInStatus === "guest") {
+        passwordHash = ""
+        localStorage.setItem("punktfuerdich_passwordhash", passwordHash)
+    } else if(logInStatus === "in"){
+        passwordHash = localStorage.getItem("punktfuerdich_passwordhash")
+        isPasswordValid = true
+    }
+
     document.querySelector('#password').value = ""
-    showOrHideLoginSmile()
+    showOrHideLogin()
+    updateHTML()
 }
 
 function validatePassword(){
     let password = document.querySelector('#password').value
 
-    hashString(password).then(passwordHash => {
-        if(passwordHash === "") return ""
+    hashString(password).then(hash => {
+        if(hash === "") return ""
 
-        let data = {"password": passwordHash}
+        let data = {"password": hash}
 
         fetch(API_URL + "/api/entry/isvalidpassword", {
             method: "POST",
@@ -52,8 +70,8 @@ function validatePassword(){
             .then(response => {return response.json()})
             .then(data => {
                 if(data === true){
+                    localStorage.setItem("punktfuerdich_passwordhash", hash)
                     setLogInStatus("in")
-                    localStorage.setItem("punktfuerdich-passwordhash", passwordHash)
                 } else{
                     setLogInStatus("out")
                 }
@@ -61,8 +79,8 @@ function validatePassword(){
     });
 }
 
-function showOrHideLoginSmile(){
-    localStorage.setItem("punktfuerdich_loginstatus", logInStatus)
+function showOrHideLogin(){
+    localStorage.setItem("punktfuerdich_loginstate", logInStatus)
 
     if(logInStatus === "in" || logInStatus === "guest"){
         document.querySelector('main').style.display = 'block'
@@ -70,6 +88,7 @@ function showOrHideLoginSmile(){
     } else{
         document.querySelector('main').style.display = 'none'
         document.querySelector('.login').style.display = 'grid'
+        document.querySelector('#password').focus()
     }
 }
 
@@ -110,36 +129,79 @@ function createSocketConnection() {
     }
 }
 
-function updateHTML(m) {
-    document.querySelector('.leaderboard tbody').innerHTML = ""
-    for (const key in m) {
-        if(m[key].name === "MICHI"){
-            document.querySelector('.michi p').innerHTML = m[key].points
-        }
-        if(m[key].name === "YANIK"){
-            document.querySelector('.yanik p').innerHTML = m[key].points
+function updateHTML(data) {
+    if(hoveredElem) {
+        updateSingleElement(data, hoveredElem)
+    } else {
+        document.querySelector('.michi p').innerHTML = 0
+        document.querySelector('.yanik p').innerHTML = 0
+
+        let tbody = ""
+        for (const key in data) {
+            if(data[key].name === "MICHI"){
+                document.querySelector('.michi p').innerHTML = data[key].points
+            }
+            if(data[key].name === "YANIK"){
+                document.querySelector('.yanik p').innerHTML = data[key].points
+            }
+
+            tbody += `
+            <tr class="entry">
+                <td class="left">
+                    ${isPasswordValid ? `<button onclick="post('remove', '${data[key].name}')" class="remove"><i class="fa-solid fa-trash"></i></button>` : ""}
+                    <span>${data[key].displayName}</span>
+                </td>
+                <td class="right">
+                    ${isPasswordValid ? `<button onclick="post('decrease', '${data[key].displayName}');">-</button>` : ""}
+                    <p class="points">${data[key].points}</p>
+                    ${isPasswordValid ? `<button onclick="post('increase', '${data[key].displayName}');">+</button>` : ""}
+                </td>
+            </tr>`
         }
 
-        document.querySelector('.leaderboard tbody').innerHTML += `
-        <tr class="entry">
-            <td class="left">${m[key].displayName}</td>
-            <td class="right">
-                <button onclick="decrease('${m[key].displayName}')">-</button>
-                <p class="points">${m[key].points}</p>
-                <button onclick="increase('${m[key].displayName}')">+</button>
-            </td>
-        </tr>`
+        document.querySelector('.leaderboard tbody').innerHTML = tbody
+
+        document.querySelectorAll('.entry .right button').forEach(elem => {
+            elem.addEventListener("mouseover", (event) => {
+                hoveredElem = event.currentTarget
+            })
+            elem.addEventListener("mouseleave", (event) => {
+                hoveredElem = ""
+                fetch(API_URL + "/api/entry/getall")
+                    .then(response => {return response.json()})
+                    .then(data => {
+                        updateHTML(data)
+                    })
+            })
+        })
     }
 }
 
-function increase(name){
-    fetch(API_URL + "/api/entry/increase/" + name)
-        .then(data => {})
+function updateSingleElement(data, elem){
+    elem = elem.closest(".entry")
+
+    document.querySelector('.michi p').innerHTML = 0
+    document.querySelector('.yanik p').innerHTML = 0
+
+    const michiObject = data.find(item => item.name === "MICHI");
+    if(michiObject) document.querySelector('.michi p').innerHTML = michiObject.points
+
+    const yanikObject = data.find(item => item.name === "YANIK");
+    if(yanikObject) document.querySelector('.yanik p').innerHTML = yanikObject.points
+
+    const singleObject = data.find(item => item.displayName === elem.querySelector('.left span').innerHTML)
+    if(singleObject) elem.querySelector('.points').innerHTML = singleObject.points
 }
 
-function decrease(name) {
-    fetch(API_URL + "/api/entry/decrease/" + name)
-        .then(data => {})
+function post(functionType, name){
+    let data = {name: name, password: passwordHash}
+    fetch(API_URL + "/api/entry/" + functionType, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)})
+        .then(response => {})
 }
 
 function buttonAnimation(button){
@@ -170,7 +232,7 @@ function buttonAnimation(button){
 
     clickCircle.animate([
         {scale: '.4', opacity: '1', borderRadius: '20%'},
-        {scale: '1', opacity: '0.2', borderRadius: '50%'},
+        {scale: '1', opacity: '0', borderRadius: '50%'},
     ],{
         duration: 500,
         iterations: 1,

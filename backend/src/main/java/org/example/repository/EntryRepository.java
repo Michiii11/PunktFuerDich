@@ -28,25 +28,28 @@ public class EntryRepository {
     @Transactional
     public void increasePoints(String name){
         Entry entry = em.find(Entry.class, name.toUpperCase());
-
         if(entry == null){
             Entry newEntry = new Entry(name.toUpperCase(), name);
             em.persist(newEntry);
         } else {
             entry.increasePoints();
         }
-
         entrySocket.broadcast(getAll());
     }
 
     @Transactional
     public void decreasePoints(String name){
         Entry entry = em.find(Entry.class, name.toUpperCase());
-
         if(entry != null) {
             entry.decreasePoints();
         }
+        entrySocket.broadcast(getAll());
+    }
 
+    @Transactional
+    public void remove(String name){
+        Entry entry = em.find(Entry.class, name);
+        em.remove(entry);
         entrySocket.broadcast(getAll());
     }
 
@@ -63,7 +66,7 @@ public class EntryRepository {
         /*Dotenv dotenv = Dotenv.configure().load();*/
         /*dotenv.get("USER_PASSWORD")*/
 
-        return Objects.equals(password, hashString("massivebwc"));
+        return Objects.equals(password, hashString("yanichi"));
     }
 
     public static String hashString(String input) {

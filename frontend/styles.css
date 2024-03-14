@@ -138,6 +138,7 @@ tr.entry:has(button:hover){
 
 .entry td{
     margin: .3rem;
+    padding-inline: .5rem;
 }
 
 .entry td.left{
@@ -195,11 +196,28 @@ button:hover{
 }
 
 .entry button:first-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, var(--blue) 65%, var(--blue) 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #ff00ac 65%, #ff00ac 100%);
 }
 
 .entry button:last-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, var(--pink) 65%, var(--pink) 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #07D5DB 100%);
+}
+
+.entry button.remove{
+    opacity: 0;
+    transition: opacity .3s, color .3s, background-color .3s;
+    background-image: none;
+    color: black;
+    margin-right: .25rem;
+}
+
+.entry .remove:hover{
+    background-color: black;
+    color: white;
+}
+
+.entry:has(.left:hover) .remove{
+    opacity: 1;
 }
 
 .entry button:hover{
@@ -234,7 +252,7 @@ main {
 .login h2{
     font-size: 2.5rem;
     margin-bottom: .5rem;
-    background-image: repeating-linear-gradient(45deg,var(--blue) 0%,var(--blue) 10%, var(--pink) 90%, var(--pink) 100%);
+    background-image: repeating-linear-gradient(45deg,#07D5DB 0%,#07D5DB 10%, #ff00ac 90%, #ff00ac 100%);
     background-clip: text;
     color: transparent;
     width: fit-content;
@@ -250,7 +268,7 @@ main {
     box-shadow: inset 1px 1px 3px 3px rgba(0, 0, 0, 0.2);
     outline: none;
     border-radius: .3rem;
-    padding: .3rem .5rem;
+    padding: .5rem .5rem;
     width: min(35ch, 90vw);
     border: none;
     transition: background .3s;
