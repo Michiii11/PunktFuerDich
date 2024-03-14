@@ -50,6 +50,12 @@ public class EntryRepository {
         entrySocket.broadcast(getAll());
     }
 
+    @Transactional
+    public void remove(String name){
+        Entry entry = em.find(Entry.class, name);
+        em.remove(entry);
+    }
+
 
     public List<Entry> getAll(){
         return em.createQuery("select e from Entry e order by e.points desc", Entry.class).getResultList();
@@ -63,7 +69,7 @@ public class EntryRepository {
         /*Dotenv dotenv = Dotenv.configure().load();*/
         /*dotenv.get("USER_PASSWORD")*/
 
-        return Objects.equals(password, hashString("hardcodedpw"));
+        return Objects.equals(password, hashString("yanichi"));
     }
 
     public static String hashString(String input) {

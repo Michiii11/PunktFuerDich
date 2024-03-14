@@ -1,6 +1,7 @@
 package org.example.resource;
 
 import jakarta.inject.Inject;
+import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -14,16 +15,25 @@ public class EntryResource {
     @Inject
     EntryRepository repository;
 
-    @GET
-    @Path("increase/{name}")
-    public void increase(@PathParam("name")String name) {
-        repository.increasePoints(name);
+    @POST
+    @Path("increase")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void increase(JsonObject data) {
+        repository.increasePoints(data.getString("name"));
     }
 
-    @GET
-    @Path("decrease/{name}")
-    public void decrease(@PathParam("name")String name){
-        repository.decreasePoints(name);
+    @POST
+    @Path("decrease")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void decrease(JsonObject data){
+        repository.decreasePoints(data.getString("name"));
+    }
+
+    @POST
+    @Path("remove")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void remove(JsonObject data){
+        repository.remove(data.getString("name"));
     }
 
     @POST

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('#newEntry').addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-            increase(event.currentTarget.value)
+            post('increase', event.currentTarget.value)
             event.currentTarget.value = ""
         }
     });
@@ -92,47 +92,53 @@ function createSocketConnection() {
     let socket = new WebSocket(SOCKET_URL + "/socket/entry");
 
     socket.onopen = (m) => {
-        fetch(API_URL + "/api/entry/getall")
-            .then(response => {return response.json()})
-            .then(data => {
-                updateHTML(data)
-            })
+        updateHTML()
     }
     socket.onmessage = (m) => {
         updateHTML(JSON.parse(m.data))
     }
 }
 
-function updateHTML(m) {
-    document.querySelector('.leaderboard tbody').innerHTML = ""
-    for (const key in m) {
-        if(m[key].name === "MICHI"){
-            document.querySelector('.michi p').innerHTML = m[key].points
-        }
-        if(m[key].name === "YANIK"){
-            document.querySelector('.yanik p').innerHTML = m[key].points
-        }
+function updateHTML() {
+    fetch(API_URL + "/api/entry/getall")
+        .then(response => {return response.json()})
+        .then(data => {
+            document.querySelector('.leaderboard tbody').innerHTML = ""
+            document.querySelector('.michi p').innerHTML = 0
+            document.querySelector('.yanik p').innerHTML = 0
+            for (const key in data) {
+                if(data[key].name === "MICHI"){
+                    document.querySelector('.michi p').innerHTML = data[key].points
+                }
+                if(data[key].name === "YANIK"){
+                    document.querySelector('.yanik p').innerHTML = data[key].points
+                }
 
-        document.querySelector('.leaderboard tbody').innerHTML += `
-        <tr class="entry">
-            <td class="left">${m[key].displayName}</td>
-            <td class="right">
-                <button onclick="decrease('${m[key].displayName}')">-</button>
-                <p class="points">${m[key].points}</p>
-                <button onclick="increase('${m[key].displayName}')">+</button>
-            </td>
-        </tr>`
-    }
+            document.querySelector('.leaderboard tbody').innerHTML += `
+                <tr class="entry">
+                    <td class="left">
+                        <button onclick="post('remove', '${data[key].name}')"><i class="fa-solid fa-trash"></i></button>
+                        ${data[key].displayName}
+                    </td>
+                    <td class="right">
+                        <button onclick="post('decrease', '${data[key].displayName}')">-</button>
+                        <p class="points">${data[key].points}</p>
+                        <button onclick="post('increase', '${data[key].displayName}')">+</button>
+                    </td>
+                </tr>`
+            }
+        })
 }
 
-function increase(name){
-    fetch(API_URL + "/api/entry/increase/" + name)
-        .then(data => {})
-}
-
-function decrease(name) {
-    fetch(API_URL + "/api/entry/decrease/" + name)
-        .then(data => {})
+function post(functionType, name){
+    let data = {name: name}
+    fetch(API_URL + "/api/entry/" + functionType, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)})
+        .then(response => {updateHTML()})
 }
 
 function buttonAnimation(button){

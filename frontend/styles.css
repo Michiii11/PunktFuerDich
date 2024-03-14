@@ -190,11 +190,11 @@ button:hover{
 }
 
 .entry button:first-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #07D5DB 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #ff00ac 65%, #ff00ac 100%);
 }
 
 .entry button:last-of-type{
-    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #ff00ac 65%, #ff00ac 100%);
+    background-image: repeating-linear-gradient(45deg, #FFF 0%, #FFF 40%, #07D5DB 65%, #07D5DB 100%);
 }
 
 .entry button:hover{
