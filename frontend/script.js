@@ -52,7 +52,9 @@ function setLogInStatus(status){
 
     document.querySelector('#password').value = ""
     showOrHideLogin()
-    updateHTML()
+
+    if(logInStatus === "in" || logInStatus === "guest")
+    createSocketConnection()
 }
 
 function validatePassword(){
@@ -73,7 +75,6 @@ function validatePassword(){
                 }
             })
     });
-
 }
 
 function validatePasswordHash(hash){
@@ -121,7 +122,6 @@ async function hashString(input) {
     }
 }
 
-createSocketConnection()
 function createSocketConnection() {
     let socket = new WebSocket(SOCKET_URL + "/socket/entry");
 
@@ -213,6 +213,23 @@ function post(functionType, name){
 }
 
 function buttonAnimation(button){
+    if(logInStatus !== "in") {
+        console.log("shaking")
+        //shake the button a little
+        button.animate([
+            {transform: 'translateX(0)'},
+            {transform: 'translateX(4px)'},
+            {transform: 'translateX(-4px)'},
+            {transform: 'translateX(4px)'},
+            {transform: 'translateX(-4px)'},
+            {transform: 'translateX(0)'}
+        ],{
+            duration: 300,
+            iterations: 1,
+            easing: 'ease-in'
+        })
+        return
+    }
     button.animate([
         {scale: '1'},
         {scale: '0.98'},
