@@ -157,7 +157,7 @@ function updateHTML(data) {
             <tr class="entry">
                 <td class="left">
                     ${isPasswordValid ? `<button onclick="post('remove', '${data[key].name}')" class="remove"><i class="fa-solid fa-trash"></i></button>` : ""}
-                    <span>${data[key].displayName}</span>
+                    <span class="name">${data[key].displayName}</span>
                 </td>
                 <td class="right">
                     ${isPasswordValid ? `<button onclick="post('decrease', '${data[key].displayName}');">-</button>` : ""}
